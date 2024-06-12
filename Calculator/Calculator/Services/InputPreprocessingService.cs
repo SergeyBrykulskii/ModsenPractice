@@ -56,11 +56,18 @@ public class InputPreprocessingService
                 return false;
             }
             var variables = new List<string>(match.Groups["variables"].Value.Split(','));
-            foreach(var variable in variables)
+            if (variables.Count == 0)
             {
-                if (char.IsDigit(variable[0]))
+                return false;
+            }
+            else
+            {
+                foreach (var variable in variables)
                 {
-                    return false;
+                    if (char.IsDigit(variable[0]))
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -70,7 +77,7 @@ public class InputPreprocessingService
                 string variable = m.Value;
                 if (!int.TryParse(variable, out _))
                 {
-                    if (char.IsDigit(variable[0])) 
+                    if (char.IsDigit(variable[0]) || !variables.Contains(variable)) 
                     {
                         return false;
                     }
