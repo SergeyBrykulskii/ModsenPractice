@@ -55,6 +55,7 @@ public class InputPreprocessingService
             {
                 return false;
             }
+
             var variables = new List<string>(match.Groups["variables"].Value.Split(','));
             if (variables.Count == 0)
             {
@@ -91,4 +92,44 @@ public class InputPreprocessingService
             return false;
         }
     }
+
+	/// <summary>
+	/// Create tuple of variable name and value from input string
+	/// </summary>
+	/// <param name="inputVar"></param>
+	/// <returns></returns>
+	public (string,string) ProcessVariable(string inputVar)
+	{
+		string pattern = @"^(?<name>\w+)=(?<value>.+)$";
+		Match match = Regex.Match(inputVar, pattern);
+
+		if (VariableValidation(inputVar))
+		{
+			return (match.Groups["name"].Value, match.Groups["value"].Value);
+		}
+		else
+		{
+			throw new ArgumentException("Invalid input string format");
+		}
+	}
+
+	/// <summary>
+	/// Check if input string is a valid variable definition
+	/// </summary>
+	/// <param name="inputVar"></param>
+	/// <returns>True for valid variable definition</returns>
+	public bool VariableValidation(string inputVar)
+	{
+		string pattern = @"^(?<name>\w+)=(?<value>-?\d+(?:[.,]\d+)?)$";
+		Match match = Regex.Match(inputVar, pattern);
+
+		if (match.Success && !char.IsDigit(match.Groups["name"].Value[0]))
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 }
