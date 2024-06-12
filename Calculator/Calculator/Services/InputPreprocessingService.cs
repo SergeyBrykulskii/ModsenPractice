@@ -44,18 +44,44 @@ public class InputPreprocessingService
 	/// </summary>
 	/// <param name="inputFunc"></param>
 	/// <returns>True for valid function</returns>
-	public bool FunctionValidation(string inputFunc) 
+    public bool FunctionValidation(string inputFunc) 
     {
-		string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
-		Match match = Regex.Match(inputFunc, pattern);
+        string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
+        Match match = Regex.Match(inputFunc, pattern);
 
-		if (match.Success)
-		{
+        if (match.Success)
+        {
+            if (char.IsDigit(match.Groups["name"].Value[0]))
+            {
+                return false;
+            }
+            var variables = new List<string>(match.Groups["variables"].Value.Split(','));
+            foreach(var variable in variables)
+            {
+                if (char.IsDigit(variable[0]))
+                {
+                    return false;
+                }
+            }
+
+            MatchCollection matches = Regex.Matches(match.Groups["expression"].Value, @"\b\w+\b");
+            foreach (Match m in matches)
+            {
+                string variable = m.Value;
+                if (!int.TryParse(variable, out _))
+                {
+                    if (char.IsDigit(variable[0])) 
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
+        }
+        else
+        {
+            return false;
+        }
+    }
 }
