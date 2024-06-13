@@ -68,7 +68,10 @@ public class InputPreprocessingService
             }
 
             List<string> funcBodyVariables = new List<string>();
-            MatchCollection matches = Regex.Matches(match.Groups["expression"].Value, @"\b\w+\b");
+            var expr = match.Groups["expression"].Value;
+            //expr = ReplaceUserFunctions(expr);
+            MatchCollection matches = Regex.Matches(expr, @"\b\w+\b");
+            
             foreach (Match m in matches)
             {
                 string variable = m.Value;
