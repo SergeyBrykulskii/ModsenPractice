@@ -73,6 +73,41 @@ public class RpnService
 
     public double СalculateRpn(string inputRPN)
     {
-        throw new NotImplementedException();
+        double result = 0;
+        Stack<double> temp = new Stack<double>(); 
+
+        for (int i = 0; i < inputRPN.Length; i++)
+        {
+            
+            if (Char.IsDigit(inputRPN[i]))
+            {
+                string a = string.Empty;
+                
+                while (!IsOperator(inputRPN[i]) && inputRPN != " ") 
+                {
+                    a += inputRPN[i]; 
+                    i++;
+                    if (i == inputRPN.Length) break;
+                }
+                temp.Push(double.Parse(a)); 
+                i--;
+            }
+            else if (IsOperator(inputRPN[i]))
+            {
+                
+                double a = temp.Pop();
+                double b = temp.Pop();
+
+                switch (inputRPN[i]) 
+                {
+                    case '+': result = b + a; break;
+                    case '-': result = b - a; break;
+                    case '*': result = b * a; break;
+                    case '/': result = b / a; break;
+                }
+                temp.Push(result); 
+            }
+        }
+        return temp.Peek(); 
     }
 }
