@@ -1,4 +1,16 @@
-﻿namespace Calculator.Services;
+﻿using System.Net.NetworkInformation;
+
+namespace Calculator.Services;
+
+public static class CharExtension
+{
+    public static bool IsOperator(this char c)
+    {
+        if ("()+-*/".Contains(c))
+            return true;
+        return false;
+    }
+}
 
 /// <summary>
 ///  Reverse Polish notation processing service
@@ -92,7 +104,7 @@ public class RpnService
                 temp.Push(double.Parse(a)); 
                 i--;
             }
-            else if (IsOperator(inputRPN[i]))
+            else if (inputRPN[i].IsOperator())
             {
                 
                 double a = temp.Pop();
