@@ -23,7 +23,6 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
         <Entry 
             x:Name="ExpressionEntry"
@@ -43,40 +42,42 @@
             Grid.Column="0" 
             Grid.Row="1"
             Grid.ColumnSpan="4"/>
-        <Entry
-             x:Name="FunctionEntry"
+        <Label
+             x:Name="FunctionLabel"
+             Text="User functions:"
              TextColor="Gray"  
              FontSize="17"
-             HorizontalTextAlignment="End"
              Grid.Column="4" 
              Grid.Row="0"/>
-        <Entry
-            x:Name="VariableEntry"
+        <Label
+            x:Name="VariableLable"
+            Text="User variables:"
             TextColor="Gray"  
             FontSize="17"
-            HorizontalTextAlignment="End"
             Grid.Column="5" 
             Grid.Row="0"/>
         <Button
             x:Name="AddFunction"
             BackgroundColor="#4bc3ff"
-            Grid.Row="1"
-            Grid.Column="4"
+            Grid.Row="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             TextColor="Black"
             Text="Add function" 
             BorderColor="#181a1c"/>
         <Button
             x:Name="AddVariable"
             BackgroundColor="#4bc3ff"
-            Grid.Row="1"
-            Grid.Column="5"
+            Grid.Row="2"
+            Grid.Column="2"
+            Grid.ColumnSpan="2"
             TextColor="Black"
             Text="Add variable" 
             BorderColor="#181a1c"/>
         <ListView 
             x:Name="FunctionListView"
             Grid.Column="4"
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.RowSpan="7">
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
@@ -89,7 +90,7 @@
         <ListView 
             x:Name="VariableListView"
             Grid.Column="5"
-            Grid.Row="2"
+            Grid.Row="1"
             Grid.RowSpan="7">   
             <ListView.ItemsSource>
                 <x:Array Type="{x:Type x:String}">
@@ -100,231 +101,138 @@
             </ListView.ItemsSource>
         </ListView>
 
-        <Grid 
-            Grid.Column="0" 
-            Grid.Row="2"
-            Grid.ColumnSpan="4"
-            ColumnSpacing="3" 
-            RowSpacing="3"
-            BackgroundColor="#181a1c">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-                <ColumnDefinition />
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition />
-            </Grid.RowDefinitions>
-            <Button 
-                x:Name="MC"
-                BackgroundColor="#181a1c"
-                Grid.Row="0"
-                Grid.Column="0"
-                TextColor="White"
-                Text="MC"
-                BorderColor="#181a1c"
-                IsEnabled="False"/>
-            <Button
-                x:Name="MR"
-                BackgroundColor="#181a1c"
-                Grid.Row="0"
-                Grid.Column="1"
-                TextColor="White"
-                Text="MR" 
-                BorderColor="#181a1c"
-                IsEnabled="False"/>
-            <Button
-                x:Name="MPlus"
-                BackgroundColor="#181a1c"
-                Grid.Row="0"
-                Grid.Column="2"
-                TextColor="White"
-                Text="M+" 
-                BorderColor="#181a1c"/>
-            <Button
-                x:Name="MMinus"
-                BackgroundColor="#181a1c"
-                Grid.Row="0"
-                Grid.Column="3"
-                TextColor="White"
-                Text="M-" 
-                BorderColor="#181a1c"/>
-            <Button
-                x:Name="MS"
-                BackgroundColor="#181a1c"
-                Grid.Row="0"
-                Grid.Column="4"
-                TextColor="White"
-                Text="MS"
-                BorderColor="#181a1c"/>
-        </Grid>
-        <Button
-            x:Name="Persent"
-            BackgroundColor="#2d2e31"
-            Grid.Row="3"
-            Grid.Column="0"
-            TextColor="White"
-            Text="%"/>
-        <Button
-            x:Name="CE"
-            BackgroundColor="#2d2e31"
-            Grid.Row="3"
-            Grid.Column="1"
-            TextColor="White"
-            Text="CE"/>
+        
         <Button
             x:Name="C"
             BackgroundColor="#2d2e31"
             Grid.Row="3"
-            Grid.Column="2"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
             TextColor="White"
             Text="C"/>
         <Button
             x:Name="Backspace"
             BackgroundColor="#2d2e31"
             Grid.Row="3"
-            Grid.Column="3"
+            Grid.Column="2"
             TextColor="White"
             Text="⌫"/>
         <Button
-            x:Name="Log"
-            BackgroundColor="#2d2e31"
-            Grid.Row="4"
-            Grid.Column="0"
-            TextColor="White"
-            Text="log(x)"/>
-        <Button
-            x:Name="SecPow"
-            BackgroundColor="#2d2e31"
-            Grid.Row="4"
-            Grid.Column="1"
-            TextColor="White"
-            Text="x²"/>
-        <Button
-            x:Name="Sqrt"
-            BackgroundColor="#2d2e31"
-            Grid.Row="4"
-            Grid.Column="2"
-            TextColor="White"
-            Text="√"/>
-        <Button
             x:Name="Div"
             BackgroundColor="#2d2e31"
-            Grid.Row="4"
+            Grid.Row="3"
             Grid.Column="3"
             TextColor="White"
             Text="÷"/>
         <Button
             x:Name="Seven"
             BackgroundColor="#36393a"
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="0"
             TextColor="White"
             Text="7"/>
         <Button
             x:Name="Eight"
             BackgroundColor="#36393a"
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="1"
             TextColor="White"
             Text="8"/>
         <Button
             x:Name="Nine"
             BackgroundColor="#36393a"
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="2"
             TextColor="White"
             Text="9" />
         <Button
             x:Name="Mult"
             BackgroundColor="#2d2e31"
-            Grid.Row="5"
+            Grid.Row="4"
             Grid.Column="3"
             TextColor="White"
             Text="×" />
         <Button
             x:Name="Four"
             BackgroundColor="#36393a"
-            Grid.Row="6"
+            Grid.Row="5"
             Grid.Column="0"
             TextColor="White"
             Text="4"/>
         <Button
             x:Name="Five"
             BackgroundColor="#36393a"
-            Grid.Row="6"
+            Grid.Row="5"
             Grid.Column="1"
             TextColor="White"
             Text="5"/>
         <Button
             x:Name="Six"
             BackgroundColor="#36393a"
-            Grid.Row="6"
+            Grid.Row="5"
             Grid.Column="2"
             TextColor="White"
             Text="6"/>
         <Button
             x:Name="Minus"
             BackgroundColor="#2d2e31"
-            Grid.Row="6"
+            Grid.Row="5"
             Grid.Column="3"
             TextColor="White"
             Text="-"/>
         <Button
             x:Name="One"
             BackgroundColor="#36393a"
-            Grid.Row="7"
+            Grid.Row="6"
             Grid.Column="0"
             TextColor="White"
             Text="1"/>
         <Button
             x:Name="Two"
             BackgroundColor="#36393a"
-            Grid.Row="7"
+            Grid.Row="6"
             Grid.Column="1"
             TextColor="White"
             Text="2"/>
         <Button
             x:Name="Three"
             BackgroundColor="#36393a"
-            Grid.Row="7"
+            Grid.Row="6"
             Grid.Column="2"
             TextColor="White"
             Text="3"/>
         <Button
             x:Name="Plus"
             BackgroundColor="#2d2e31"
-            Grid.Row="7"
+            Grid.Row="6"
             Grid.Column="3"
             TextColor="White"
             Text="+"/>
         <Button
             x:Name="PlusMinus"
             BackgroundColor="#36393a"
-            Grid.Row="8"
+            Grid.Row="7"
             Grid.Column="0"
             TextColor="White"
             Text="±"/>
         <Button
             x:Name="Zero"
             BackgroundColor="#36393a"
-            Grid.Row="8"
+            Grid.Row="7"
             Grid.Column="1"
             TextColor="White"
             Text="0"/>
         <Button
             x:Name="Dot"
             BackgroundColor="#36393a"
-            Grid.Row="8"
+            Grid.Row="7"
             Grid.Column="2"
             TextColor="White"
             Text=","/>
         <Button
             x:Name="Equal"
             BackgroundColor="#4bc3ff"
-            Grid.Row="8"
+            Grid.Row="7"
             Grid.Column="3"
             TextColor="Black"
             Text="="/>
