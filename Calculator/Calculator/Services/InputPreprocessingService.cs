@@ -67,6 +67,7 @@ public class InputPreprocessingService
                 }
             }
 
+            List<string> funcBodyVariables = new List<string>();
             MatchCollection matches = Regex.Matches(match.Groups["expression"].Value, @"\b\w+\b");
             foreach (Match m in matches)
             {
@@ -77,9 +78,17 @@ public class InputPreprocessingService
                     {
                         return false;
                     }
+                    funcBodyVariables.Add(variable);    
                 }
             }
 
+            foreach(var v in variables)
+            {
+                if (!funcBodyVariables.Contains(v))
+                {
+                    return false;
+                }
+            }
             return true;
         }
         else
