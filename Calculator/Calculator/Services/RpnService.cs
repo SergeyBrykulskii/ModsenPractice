@@ -50,7 +50,7 @@ public class RpnService
                         output += operators.Pop().ToString() + " ";
                     operators.Pop();
                 }
-                else if (input[i] == '-' && (i == 0 || (i > 1 && operatorsPriority.ContainsKey(input[i - 1]))))
+                else if (input[i] == '-' && (i == 0 || (i >= 1 && operatorsPriority.ContainsKey(input[i - 1]))))
                 {
                     output += "0 ";
                     operators.Push(input[i]);
