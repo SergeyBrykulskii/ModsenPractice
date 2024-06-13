@@ -26,77 +26,16 @@ public class InputPreprocessingService
         string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
         Match match = Regex.Match(inputFunc, pattern);
 
-        if (FunctionValidation(inputFunc))
+        if (!InputValidationService.FunctionValidation(inputFunc))
+        {
+            throw new ArgumentException("Invalid input string format");
+        }
+        else
         {
             outputFunc.Name = match.Groups["name"].Value;
             outputFunc.Variables = new List<string>(match.Groups["variables"].Value.Split(','));
             outputFunc.Expression = match.Groups["expression"].Value;
             return outputFunc;
-        }
-        else
-        {
-            throw new ArgumentException("Invalid input string format");
-        }
-    }
-
-	/// <summary>
-	/// Check if input string is a valid function notation
-	/// </summary>
-	/// <param name="inputFunc"></param>
-	/// <returns>True for valid function</returns>
-    public bool FunctionValidation(string inputFunc) 
-    {
-        string pattern = @"^(?<name>[A-Za-z]\w*)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
-        Match match = Regex.Match(inputFunc, pattern);
-
-        if (match.Success)
-        {
-            var variables = new List<string>(match.Groups["variables"].Value.Split(','));
-            if (variables.Count == 0)
-            {
-                return false;
-            }
-            else
-            {
-                foreach (var variable in variables)
-                {
-                    if (variable.Length == 0 || char.IsDigit(variable[0]))
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            List<string> funcBodyVariables = new List<string>();
-            var expr = match.Groups["expression"].Value;
-            //expr = ReplaceUserFunctions(expr);
-            MatchCollection matches = Regex.Matches(expr, @"\b\w+\b");
-            
-            foreach (Match m in matches)
-            {
-                string variable = m.Value;
-                if (!int.TryParse(variable, out _))
-                {
-                    if (char.IsDigit(variable[0]) || !variables.Contains(variable)) 
-                    {
-                        return false;
-                    }
-                    funcBodyVariables.Add(variable);    
-                }
-            }
-
-            foreach(var v in variables)
-            {
-                if (!funcBodyVariables.Contains(v))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
 
@@ -107,29 +46,16 @@ public class InputPreprocessingService
 	/// <returns></returns>
 	public (string Name, string Value) ProcessVariable(string inputVar)
 	{
-		string pattern = @"^(?<name>\w+)=(?<value>.+)$";
-		Match match = Regex.Match(inputVar, pattern);
+        string pattern = @"^(?<name>\w+)=(?<value>.+)$";
+        Match match = Regex.Match(inputVar, pattern);
 
-		if (VariableValidation(inputVar))
-		{
-			return (match.Groups["name"].Value, match.Groups["value"].Value);
-		}
-		else
-		{
-			throw new ArgumentException("Invalid input string format");
-		}
-	}
-
-	/// <summary>
-	/// Check if input string is a valid variable definition
-	/// </summary>
-	/// <param name="inputVar"></param>
-	/// <returns>True for valid variable definition</returns>
-	public bool VariableValidation(string inputVar)
-	{
-		string pattern = @"^(?<name>[A-Za-z]\w*)=(?<value>-?\d+(?:[.,]\d+)?)$";
-		Match match = Regex.Match(inputVar, pattern);
-
-		return match.Success;
-	}
+        if (!InputValidationService.VariableValidation(inputVar))
+        {
+            throw new ArgumentException("Invalid input string format");
+        }
+        else
+        {
+            return (match.Groups["name"].Value, match.Groups["value"].Value);
+        }
+    }
 }
