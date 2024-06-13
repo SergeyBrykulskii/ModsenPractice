@@ -20,8 +20,8 @@ public class RpnServiceTests
     public void InfixNotationToRpn_ShouldConvertInfixToRpn_WithFractionalNumbers()
     {
         var rpn = new RpnService();
-        var input = "(2,5+1,5)*3,2/2";
-        var expectedOutput = "2,5 1,5 + 3,2 * 2 / ";
+        var input = "(2.5+1.5)*3.2/2";
+        var expectedOutput = "2.5 1.5 + 3.2 * 2 / ";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -44,8 +44,8 @@ public class RpnServiceTests
     public void InfixNotationToRpn_ShouldConvertInfixToRpn_WithFractionalAndNegativeNumbers()
     {
         var rpn = new RpnService();
-        var input = "(-2,5+1,3)/8";
-        var expectedOutput = "0 2,5 - 1,3 + 8 / ";
+        var input = "(-2.5+1.3)/8";
+        var expectedOutput = "0 2.5 - 1.3 + 8 / ";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -68,8 +68,8 @@ public class RpnServiceTests
     public void InfixNotationToRpn_ShouldConvertInfixToRpn_ComplexExpression2()
     {
         var rpn = new RpnService();
-        var input = "((-4-2)*((8+3)/(2-1,67)))+(6/(2+(4/2)))";
-        var expectedOutput = "0 4 - 2 - 8 3 + 2 1,67 - / * 6 2 4 2 / + / + ";
+        var input = "((-4-2)*((8+3)/(2-1.67)))+(6/(2+(4/2)))";
+        var expectedOutput = "0 4 - 2 - 8 3 + 2 1.67 - / * 6 2 4 2 / + / + ";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -80,8 +80,8 @@ public class RpnServiceTests
     public void InfixNotationToRpn_ShouldConvertInfixToRpn_ComplexExpression3()
     {
         var rpn = new RpnService();
-        var input = "-2,3535*((3,32+1,67)/-0,8)+(6,48/(-2+(20/-2)))";
-        var expectedOutput = "0 2,3535 3,32 1,67 + 0 0,8 - / * - 6,48 0 2 - 20 0 2 - / + / + ";
+        var input = "-2.3535*((3.32+1.67)/-0.8)+(6.48/(-2+(20/-2)))";
+        var expectedOutput = "0 2.3535 3.32 1.67 + 0 0.8 - / * - 6.48 0 2 - 20 0 2 - / + / + ";
 
         var result = rpn.InfixNotationToRpn(input);
 
