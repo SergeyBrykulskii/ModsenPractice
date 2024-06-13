@@ -83,7 +83,7 @@ public class RpnService
             {
                 string a = string.Empty;
                 
-                while (!IsOperator(inputRPN[i]) && inputRPN != " ") 
+                while (!IsOperator(inputRPN[i]) && inputRPN[i] != ' ') 
                 {
                     a += inputRPN[i]; 
                     i++;
