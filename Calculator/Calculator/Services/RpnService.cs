@@ -5,6 +5,12 @@
 /// </summary>
 public class RpnService
 {
+    static private bool IsOperator(char symbol)
+    {
+        if ("()+-*/".Contains(symbol))
+            return true;
+        return false;
+    }
     public string InfixNotationToRpn(string input)
     {
          Dictionary<char, int> operatorsPriority = new Dictionary<char, int>()
@@ -23,7 +29,7 @@ public class RpnService
         {
             if (Char.IsDigit(input[i]))
             {
-                while (!"()+-*/".Contains(input[i]))
+                while (!IsOperator(input[i]))
                 {
                     output += input[i];
                     i++;
@@ -34,7 +40,7 @@ public class RpnService
                 i--;
             }
 
-            if ("()+-*/".Contains(input[i]))
+            if (IsOperator(input[i]))
             {
                 if (input[i] == '(')
                     operators.Push(input[i]);
