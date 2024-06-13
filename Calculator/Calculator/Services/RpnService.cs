@@ -5,7 +5,7 @@
 /// </summary>
 public class RpnService
 {
-    static private bool IsOperator(char symbol)
+    static public bool IsOperator(char symbol)
     {
         if ("()+-*/".Contains(symbol))
             return true;
@@ -27,7 +27,7 @@ public class RpnService
 
         for (int i = 0; i < input.Length; i++)
         {
-            if (Char.IsDigit(input[i]))
+            if (Char.IsDigit(input[i])) //read the number
             {
                 while (!IsOperator(input[i]))
                 {
@@ -44,13 +44,13 @@ public class RpnService
             {
                 if (input[i] == '(')
                     operators.Push(input[i]);
-                else if (input[i] == ')')
+                else if (input[i] == ')') //push all operators up to the opening bracket from the stack, and remove the opening bracket from the stack
                 {
                     while (operators.Peek() != '(')
                         output += operators.Pop().ToString() + " ";
                     operators.Pop();
                 }
-                else if (input[i] == '-' && (i == 0 || (i >= 1 && operatorsPriority.ContainsKey(input[i - 1]))))
+                else if (input[i] == '-' && (i == 0 || (i >= 1 && operatorsPriority.ContainsKey(input[i - 1])))) //for unary minus
                 {
                     output += "0 ";
                     operators.Push(input[i]);
@@ -59,7 +59,7 @@ public class RpnService
                 {
                     if (operators.Count > 0)
                     {
-                        while (operators.Count > 0 && operatorsPriority[operators.Peek()] >= operatorsPriority[input[i]])
+                        while (operators.Count > 0 && operatorsPriority[operators.Peek()] >= operatorsPriority[input[i]]) //push into the output from the stack all operators that have a priority higher than the current
                             output += operators.Pop().ToString() + " ";
                     }
                     operators.Push(input[i]);
