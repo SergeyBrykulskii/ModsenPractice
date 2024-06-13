@@ -46,16 +46,11 @@ public class InputPreprocessingService
 	/// <returns>True for valid function</returns>
     public bool FunctionValidation(string inputFunc) 
     {
-        string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
+        string pattern = @"^(?<name>[A-Za-z]\w*)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
         Match match = Regex.Match(inputFunc, pattern);
 
         if (match.Success)
         {
-            if (char.IsDigit(match.Groups["name"].Value[0]))
-            {
-                return false;
-            }
-
             var variables = new List<string>(match.Groups["variables"].Value.Split(','));
             if (variables.Count == 0)
             {
@@ -65,7 +60,7 @@ public class InputPreprocessingService
             {
                 foreach (var variable in variables)
                 {
-                    if (char.IsDigit(variable[0]))
+                    if (variable.Length == 0 || char.IsDigit(variable[0]))
                     {
                         return false;
                     }
@@ -120,16 +115,9 @@ public class InputPreprocessingService
 	/// <returns>True for valid variable definition</returns>
 	public bool VariableValidation(string inputVar)
 	{
-		string pattern = @"^(?<name>\w+)=(?<value>-?\d+(?:[.,]\d+)?)$";
+		string pattern = @"^(?<name>[A-Za-z]\w*)=(?<value>-?\d+(?:[.,]\d+)?)$";
 		Match match = Regex.Match(inputVar, pattern);
 
-		if (match.Success && !char.IsDigit(match.Groups["name"].Value[0]))
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		return match.Success;
 	}
 }
