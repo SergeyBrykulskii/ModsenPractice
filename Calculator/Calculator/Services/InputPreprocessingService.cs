@@ -102,7 +102,7 @@ public class InputPreprocessingService
 	/// </summary>
 	/// <param name="inputVar"></param>
 	/// <returns></returns>
-	public (string,string) ProcessVariable(string inputVar)
+	public (string Name, string Value) ProcessVariable(string inputVar)
 	{
 		string pattern = @"^(?<name>\w+)=(?<value>.+)$";
 		Match match = Regex.Match(inputVar, pattern);
