@@ -23,7 +23,6 @@ public class InputPreprocessingService
     public UserFunction ProcessFunction(string inputFunc)
     {
         var outputFunc = new UserFunction();
-        inputFunc = inputFunc.Replace(" ", "");
         string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
         Match match = Regex.Match(inputFunc, pattern);
 
@@ -47,7 +46,6 @@ public class InputPreprocessingService
 	/// <returns>True for valid function</returns>
     public bool FunctionValidation(string inputFunc) 
     {
-        inputFunc = inputFunc.Replace(" ", "");
         string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
         Match match = Regex.Match(inputFunc, pattern);
 
@@ -102,7 +100,6 @@ public class InputPreprocessingService
 	/// <returns></returns>
 	public (string,string) ProcessVariable(string inputVar)
 	{
-		inputVar = inputVar.Replace(" ", "");
 		string pattern = @"^(?<name>\w+)=(?<value>.+)$";
 		Match match = Regex.Match(inputVar, pattern);
 
@@ -123,7 +120,6 @@ public class InputPreprocessingService
 	/// <returns>True for valid variable definition</returns>
 	public bool VariableValidation(string inputVar)
 	{
-		inputVar = inputVar.Replace(" ", "");
 		string pattern = @"^(?<name>\w+)=(?<value>-?\d+(?:[.,]\d+)?)$";
 		Match match = Regex.Match(inputVar, pattern);
 
