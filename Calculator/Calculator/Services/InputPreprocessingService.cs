@@ -1,4 +1,5 @@
 ﻿using Calculator.Models;
+using System.Text.RegularExpressions;
 
 namespace Calculator.Services;
 
@@ -21,6 +22,40 @@ public class InputPreprocessingService
     /// <returns></returns>
     public UserFunction ProcessFunction(string inputFunc)
     {
-        throw new NotImplementedException();
+        var outputFunc = new UserFunction();
+        string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
+        Match match = Regex.Match(inputFunc, pattern);
+
+        if (!InputValidationService.FunctionValidation(inputFunc))
+        {
+            throw new ArgumentException("Invalid input string format");
+        }
+        else
+        {
+            outputFunc.Name = match.Groups["name"].Value;
+            outputFunc.Variables = new List<string>(match.Groups["variables"].Value.Split(','));
+            outputFunc.Expression = match.Groups["expression"].Value;
+            return outputFunc;
+        }
+    }
+
+	/// <summary>
+	/// Create tuple of variable name and value from input string
+	/// </summary>
+	/// <param name="inputVar"></param>
+	/// <returns></returns>
+	public (string Name, string Value) ProcessVariable(string inputVar)
+	{
+        string pattern = @"^(?<name>\w+)=(?<value>.+)$";
+        Match match = Regex.Match(inputVar, pattern);
+
+        if (!InputValidationService.VariableValidation(inputVar))
+        {
+            throw new ArgumentException("Invalid input string format");
+        }
+        else
+        {
+            return (match.Groups["name"].Value, match.Groups["value"].Value);
+        }
     }
 }
