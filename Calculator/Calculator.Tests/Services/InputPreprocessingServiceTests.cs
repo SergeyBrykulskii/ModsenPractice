@@ -13,25 +13,29 @@ public class InputPreprocessingServiceTests
 {
     private InputPreprocessingService service = new InputPreprocessingService();
     [Fact]
-    public void ReplaceUserFunctions_ValidInput_ReplacesFunctionCalls()
+    public void ReplaceUserFunctions_ValidInput_ReplacesUserFunctionCalls()
     {
         var functions = new Dictionary<string, UserFunction> {
             { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } }
         };
         string input = "3 + f(1, 2)";
+        
         string result = service.ReplaceUserFunctions(input, functions);
+        
         Assert.Equal("3 + (1 + 2)", result);
     }
 
     [Fact]
-    public void ReplaceUserFunctions_MismatchedArgumentCount_ThrowsArgumentException()
+    public void ReplaceUserFunctions_MismatchedArgumentCount_ReturnsExceptionMessage()
     {
         var functions = new Dictionary<string, UserFunction>
         {
             { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } }
         };
         string input = "3 + f(1)";
+        
         string result = service.ReplaceUserFunctions(input, functions);
+        
         Assert.True(result.Contains("Function f expects 2 arguments, but got 1."));
     }
 
@@ -40,10 +44,26 @@ public class InputPreprocessingServiceTests
     {
         var functions = new Dictionary<string, UserFunction>();
         string input = "3 + 5";
+        
         string result = service.ReplaceUserFunctions(input, functions);
+        
         Assert.Equal("3 + 5", result);
     }
-  
+    
+    [Fact]
+    public void ReplaceUserFunctions_FunctionAsParam_ReplacesUserFunctionCalls()
+    {
+	    var functions = new Dictionary<string, UserFunction> {
+		    { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } },
+		    { "f1", new UserFunction { Name = "f1", Variables = new List<string> { "a", "b" }, Expression = "a * b" } }
+	    };
+	    string input = "3 + f(f1(1, 2), 2)";
+	    
+	    string result = service.ReplaceUserFunctions(input, functions);
+	    
+	    Assert.Equal("3 + ((1 * 2) + 2)", result);
+    }
+	
 	[Fact]
 	public void ProcessFunction_Correct()
 	{
