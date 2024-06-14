@@ -1,4 +1,4 @@
-﻿using Calculator.Models;
+using Calculator.Models;
 using System.Text.RegularExpressions;
 
 namespace Calculator.Services;
@@ -10,11 +10,38 @@ public class InputPreprocessingService
     /// </summary>
     /// <param name="input">Infix notation string with function calls</param>
     /// <returns>Infix notation string without function calls</returns>
-    public string ReplaceUserFunctions(string input)
-    {
-        throw new NotImplementedException();
+    public string ReplaceUserFunctions(string input, Dictionary<string, UserFunction> functions) {
+        foreach (var function in functions) {
+            var funcName = function.Key;
+            var userFunction = function.Value;
+            var regex = new Regex($@"\b{funcName}\(([^)]*)\)");
+            input = regex.Replace(input, match => ReplaceFunctionCall(match, userFunction));
+        }
+        return input;
     }
 
+    private string ReplaceFunctionCall(Match match, UserFunction userFunction)
+    {
+        var vars = match.Groups[1].Value.Split(',');
+        try
+        {
+            if (vars.Length != userFunction.Variables.Count)
+            {
+                throw new ArgumentException($"Function {userFunction.Name} expects {userFunction.Variables.Count} arguments, but got {vars.Length}.");
+            }
+            string expression = userFunction.Expression;
+            for (int i = 0; i < userFunction.Variables.Count; i++)
+            {
+                expression = expression.Replace(userFunction.Variables[i], vars[i].Trim());
+            }
+            return $"({expression})";
+        }
+        catch (ArgumentException e)
+        {
+            return e.Message;
+        }
+    }
+    
     /// <summary>
     /// Create user function object from input string
     /// </summary>
