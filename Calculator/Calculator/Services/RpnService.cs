@@ -1,4 +1,7 @@
-﻿namespace Calculator.Services;
+﻿using Calculator.Services.Extensions;
+using System.Net.NetworkInformation;
+
+namespace Calculator.Services;
 
 /// <summary>
 ///  Reverse Polish notation processing service
@@ -76,6 +79,41 @@ public class RpnService
 
     public double СalculateRpn(string inputRPN)
     {
-        throw new NotImplementedException();
+        var temp = new Stack<double>(); 
+
+        for (int i = 0; i < inputRPN.Length; i++)
+        {
+            
+            if (Char.IsDigit(inputRPN[i]))
+            {
+                string a = string.Empty;
+                
+                while (!inputRPN[i].IsOperator() && inputRPN[i] != ' ') 
+                {
+                    a += inputRPN[i]; 
+                    i++;
+                    if (i == inputRPN.Length) break;
+                }
+                temp.Push(double.Parse(a)); 
+                i--;
+            }
+            else if (inputRPN[i].IsOperator())
+            {
+                
+                double a = temp.Pop();
+                double b = temp.Pop();
+
+                double result = inputRPN[i] switch
+                {
+                    '+' => b + a,
+                    '-' => b - a,
+                    '*' => b * a,
+                    '/' => b / a,
+                    _ => throw new ArgumentException("Invalid operator"),
+                };
+                temp.Push(result); 
+            }
+        }
+        return temp.Peek(); 
     }
 }
