@@ -3,6 +3,7 @@ using Calculator.ViewModels;
 using Calculator.Views;
 using Microsoft.Extensions.Logging;
 
+
 namespace Calculator
 {
     public static class MauiProgram
