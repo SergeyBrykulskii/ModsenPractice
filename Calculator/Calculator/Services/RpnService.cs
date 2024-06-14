@@ -1,5 +1,4 @@
-﻿using Calculator.Services.Extensions;
-using System.Net.NetworkInformation;
+﻿using System.Globalization;
 
 namespace Calculator.Services;
 
@@ -79,27 +78,28 @@ public class RpnService
 
     public double СalculateRpn(string inputRPN)
     {
-        var temp = new Stack<double>(); 
+        var temp = new Stack<double>();
 
         for (int i = 0; i < inputRPN.Length; i++)
         {
-            
+
             if (Char.IsDigit(inputRPN[i]))
             {
                 string a = string.Empty;
-                
-                while (!inputRPN[i].IsOperator() && inputRPN[i] != ' ') 
+
+                while (!inputRPN[i].IsOperator() && inputRPN[i] != ' ')
                 {
-                    a += inputRPN[i]; 
+                    a += inputRPN[i];
                     i++;
                     if (i == inputRPN.Length) break;
                 }
-                temp.Push(double.Parse(a)); 
+
+                temp.Push(double.Parse(a, CultureInfo.InvariantCulture));
                 i--;
             }
             else if (inputRPN[i].IsOperator())
             {
-                
+
                 double a = temp.Pop();
                 double b = temp.Pop();
 
@@ -111,9 +111,9 @@ public class RpnService
                     '/' => b / a,
                     _ => throw new ArgumentException("Invalid operator"),
                 };
-                temp.Push(result); 
+                temp.Push(result);
             }
         }
-        return temp.Peek(); 
+        return temp.Peek();
     }
 }

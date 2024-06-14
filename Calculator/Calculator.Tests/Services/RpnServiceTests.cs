@@ -14,10 +14,10 @@ public class RpnServiceTests
 
         var result = service.СalculateRpn(input);
 
-        Assert.Equal(17,result);
+        Assert.Equal(17, result);
     }
-   
-     [Fact]
+
+    [Fact]
     public void CalculateRpn_WithPositiveIntengerNumbersAndMixedOperations_ReturnsCorrectResult2()
     {
         var service = new RpnService();
@@ -59,8 +59,8 @@ public class RpnServiceTests
 
         var result = service.СalculateRpn(input);
 
-        Assert.Equal(-4.285714, result,0.000001);
-       
+        Assert.Equal(-4.285714, result, 0.000001);
+
     }
 
     [Fact]
@@ -68,10 +68,10 @@ public class RpnServiceTests
     {
         var service = new RpnService();
         var input = " 0 4 - 2 - 8 3 + 2 1.67 - / *6 2 4 2 / + / +";
-        
+
         var result = service.СalculateRpn(input);
 
-        Assert.Equal(-198.5, result,0.000001);
+        Assert.Equal(-198.5, result, 0.000001);
     }
 
     [Fact]
@@ -94,7 +94,7 @@ public class RpnServiceTests
         var result = service.СalculateRpn(input);
 
         Assert.Equal(-256, result, 0.000001);
-
+    }
     [Fact]
 
     public void IsOperator_ShouldReturnTrue_ForValidOperators()
