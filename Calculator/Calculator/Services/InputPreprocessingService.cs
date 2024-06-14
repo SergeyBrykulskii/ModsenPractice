@@ -44,29 +44,6 @@ public class InputPreprocessingService
     /// <returns></returns>
     public UserFunction ProcessFunction(string inputFunc)
     {
-        try {
-            var parts = inputFunc.Split('=');
-            if (parts.Length != 2) {
-                throw new ArgumentException("Invalid function format. Expected format: f(x, y) = x + y");
-            }
-            string signature = parts[0].Trim();
-            string expression = parts[1].Trim();
-            Match match = Regex.Match(signature, @"(\w+)\(([^)]*)\)");
-            if (!match.Success) {
-                throw new ArgumentException("Invalid function signature. Expected format: f(x, y)");
-            }
-            string name = match.Groups[1].Value;
-            var variables = match.Groups[2].Value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            return new UserFunction {
-                Name = name,
-                Variables = new List<string>(variables.Select(v => v.Trim())),
-                Expression = expression
-            };
-        }
-        catch (ArgumentException e)
-        {
-            Console.WriteLine(e.Message);
-            return null;
-        }
+        throw new NotImplementedException();
     }
 }
