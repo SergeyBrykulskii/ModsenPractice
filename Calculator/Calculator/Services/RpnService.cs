@@ -1,28 +1,13 @@
-﻿using System.Net.NetworkInformation;
+﻿using Calculator.Services.Extensions;
+using System.Net.NetworkInformation;
 
 namespace Calculator.Services;
-
-public static class CharExtension
-{
-    public static bool IsOperator(this char c)
-    {
-        if ("()+-*/".Contains(c))
-            return true;
-        return false;
-    }
-}
 
 /// <summary>
 ///  Reverse Polish notation processing service
 /// </summary>
 public class RpnService
 {
-    static private bool IsOperator(char symbol)
-    {
-        if ("()+-*/".Contains(symbol))
-            return true;
-        return false;
-    }
     public string InfixNotationToRpn(string input)
     {
          Dictionary<char, int> operatorsPriority = new Dictionary<char, int>()
@@ -41,7 +26,7 @@ public class RpnService
         {
             if (Char.IsDigit(input[i]))
             {
-                while (!IsOperator(input[i]))
+                while (!input[i].IsOperator())
                 {
                     output += input[i];
                     i++;
@@ -52,7 +37,7 @@ public class RpnService
                 i--;
             }
 
-            if (IsOperator(input[i]))
+            if (input[i].IsOperator())
             {
                 if (input[i] == '(')
                     operators.Push(input[i]);
@@ -85,8 +70,7 @@ public class RpnService
 
     public double СalculateRpn(string inputRPN)
     {
-        double result = 0;
-        Stack<double> temp = new Stack<double>(); 
+        var temp = new Stack<double>(); 
 
         for (int i = 0; i < inputRPN.Length; i++)
         {
@@ -95,7 +79,7 @@ public class RpnService
             {
                 string a = string.Empty;
                 
-                while (!IsOperator(inputRPN[i]) && inputRPN[i] != ' ') 
+                while (!inputRPN[i].IsOperator() && inputRPN[i] != ' ') 
                 {
                     a += inputRPN[i]; 
                     i++;
@@ -110,13 +94,14 @@ public class RpnService
                 double a = temp.Pop();
                 double b = temp.Pop();
 
-                switch (inputRPN[i]) 
+                double result = inputRPN[i] switch
                 {
-                    case '+': result = b + a; break;
-                    case '-': result = b - a; break;
-                    case '*': result = b * a; break;
-                    case '/': result = b / a; break;
-                }
+                    '+' => b + a,
+                    '-' => b - a,
+                    '*' => b * a,
+                    '/' => b / a,
+                    _ => throw new ArgumentException("Invalid operator"),
+                };
                 temp.Push(result); 
             }
         }
