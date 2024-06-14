@@ -19,7 +19,7 @@ public partial class MathExpressionViewModel : ObservableObject
     private ObservableCollection<string> _userVariablesList = [];
 
     private Dictionary<string, UserFunction> userFuntions = [];
-    private Dictionary<string, (string, string)> userVariables = [];
+    private Dictionary<string, string> userVariables = [];
 
     private readonly RpnService _rpnService;
     private readonly InputPreprocessingService _inputPreprocessingService;
@@ -51,24 +51,51 @@ public partial class MathExpressionViewModel : ObservableObject
 
         AddFunctionCommand = new Command(() =>
         {
-            var function = _inputPreprocessingService.ProcessFunction(MathExpression);
-            userFuntions[function.Name!] = function;
-            UserFunctionsList.Add(MathExpression);
-            ClearEntryCommand.Execute(this);
+            try
+            {
+                var function = _inputPreprocessingService.ProcessFunction(MathExpression);
+
+                userFuntions[function.Name!] = function;
+                UserFunctionsList.Add(MathExpression);
+
+                ClearEntryCommand.Execute(this);
+            }
+            catch (Exception _)
+            {
+                CalculationResult = "Invalid input";
+            }
         });
 
         AddVariableCommand = new Command(() =>
         {
-            UserVariablesList.Add(MathExpression);
+            try
+            {
+                var veriable = _inputPreprocessingService.ProcessVariable(MathExpression);
 
-            ClearEntryCommand.Execute(this);
+                userVariables[veriable.Name] = veriable.Value;
+                UserVariablesList.Add(MathExpression);
+                ClearEntryCommand.Execute(this);
+            }
+            catch (Exception _)
+            {
+                CalculationResult = "Invalid input";
+            }
         });
 
         CalculateExpressionCommand = new Command(() =>
         {
-            CalculationResult = _rpnService.СalculateRpn(_rpnService.InfixNotationToRpn(MathExpression))
-                .ToString(CultureInfo.InvariantCulture);
-            ClearEntryCommand.Execute(this);
+            try
+            {
+                var proccesedInput = _inputPreprocessingService.ReplaceUserFunctions(MathExpression, userFuntions);
+                CalculationResult = _rpnService.СalculateRpn(_rpnService.InfixNotationToRpn(proccesedInput))
+                    .ToString(CultureInfo.InvariantCulture);
+
+                MathExpression = string.Empty;
+            }
+            catch (Exception _)
+            {
+                CalculationResult = "Invalid input";
+            }
         });
     }
 }
