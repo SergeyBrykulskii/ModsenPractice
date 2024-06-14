@@ -3,17 +3,19 @@
 /// <summary>
 ///  Reverse Polish notation processing service
 /// </summary>
+
+public static class CharExtensions
+{
+    public static bool IsOperator(this char symbol)
+    {
+        return "()+-*/".Contains(symbol);
+    }
+}
 public class RpnService
 {
-    static public bool IsOperator(char symbol)
-    {
-        if ("()+-*/".Contains(symbol))
-            return true;
-        return false;
-    }
     public string InfixNotationToRpn(string input)
     {
-         Dictionary<char, int> operatorsPriority = new Dictionary<char, int>()
+        var operatorsPriority = new Dictionary<char, int>()
          {
             { '(', 0},
             { '+', 1},
@@ -29,7 +31,7 @@ public class RpnService
         {
             if (Char.IsDigit(input[i])) //read the number
             {
-                while (!IsOperator(input[i]))
+                while (!input[i].IsOperator())
                 {
                     output += input[i];
                     i++;
@@ -40,10 +42,12 @@ public class RpnService
                 i--;
             }
 
-            if (IsOperator(input[i]))
+            if (input[i].IsOperator())
             {
                 if (input[i] == '(')
+                {
                     operators.Push(input[i]);
+                }
                 else if (input[i] == ')') //push all operators up to the opening bracket from the stack, and remove the opening bracket from the stack
                 {
                     while (operators.Peek() != '(')
@@ -66,8 +70,7 @@ public class RpnService
                 }
             }
         }
-        while (operators.Count > 0)
-            output += operators.Pop().ToString() + " ";
+        output += string.Join(" ", operators.Select(op => op.ToString()));
         return output;
     }
 

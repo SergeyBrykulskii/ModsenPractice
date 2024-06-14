@@ -14,11 +14,11 @@ public class RpnServiceTests
         var symbol4 = '*';
         var symbol5 = '/';
 
-        var result1 = RpnService.IsOperator(symbol1);
-        var result2 = RpnService.IsOperator(symbol2);
-        var result3 = RpnService.IsOperator(symbol3);
-        var result4 = RpnService.IsOperator(symbol4);
-        var result5 = RpnService.IsOperator(symbol5);
+        var result1 = symbol1.IsOperator();
+        var result2 = symbol2.IsOperator();
+        var result3 = symbol3.IsOperator();
+        var result4 = symbol4.IsOperator();
+        var result5 = symbol5.IsOperator();
 
         Assert.True(result1);
         Assert.True(result2);
@@ -35,10 +35,10 @@ public class RpnServiceTests
         var symbol3 = ' ';
         var symbol4 = '$';
 
-        var result1 = RpnService.IsOperator(symbol1);
-        var result2 = RpnService.IsOperator(symbol2);
-        var result3 = RpnService.IsOperator(symbol3);
-        var result4 = RpnService.IsOperator(symbol4);
+        var result1 = symbol1.IsOperator();
+        var result2 = symbol2.IsOperator();
+        var result3 = symbol3.IsOperator();
+        var result4 = symbol4.IsOperator();
 
         Assert.False(result1);
         Assert.False(result2);
@@ -51,7 +51,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "5+(3-2)*4";
-        var expectedOutput = "5 3 2 - 4 * + ";
+        var expectedOutput = "5 3 2 - 4 * +";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -63,7 +63,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "(2.5+1.5)*3.2/2";
-        var expectedOutput = "2.5 1.5 + 3.2 * 2 / ";
+        var expectedOutput = "2.5 1.5 + 3.2 * 2 /";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -75,7 +75,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "-5+(-3)*2";
-        var expectedOutput = "0 5 - 0 3 - 2 * + ";
+        var expectedOutput = "0 5 - 0 3 - 2 * +";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -87,7 +87,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "(-2.5+1.3)/8";
-        var expectedOutput = "0 2.5 - 1.3 + 8 / ";
+        var expectedOutput = "0 2.5 - 1.3 + 8 /";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -99,7 +99,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "((4*3)/(2+5))-(6/(2-1))";
-        var expectedOutput = "4 3 * 2 5 + / 6 2 1 - / - ";
+        var expectedOutput = "4 3 * 2 5 + / 6 2 1 - / -";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -111,7 +111,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "((-4-2)*((8+3)/(2-1.67)))+(6/(2+(4/2)))";
-        var expectedOutput = "0 4 - 2 - 8 3 + 2 1.67 - / * 6 2 4 2 / + / + ";
+        var expectedOutput = "0 4 - 2 - 8 3 + 2 1.67 - / * 6 2 4 2 / + / +";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -123,7 +123,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "-2.3535*((3.32+1.67)/-0.8)+(6.48/(-2+(20/-2)))";
-        var expectedOutput = "0 2.3535 3.32 1.67 + 0 0.8 - / * - 6.48 0 2 - 20 0 2 - / + / + ";
+        var expectedOutput = "0 2.3535 3.32 1.67 + 0 0.8 - / * - 6.48 0 2 - 20 0 2 - / + / +";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -135,7 +135,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "(((15+4)*(12-8))/(20+5))-((18-10)*(7+3))";
-        var expectedOutput = "15 4 + 12 8 - * 20 5 + / 18 10 - 7 3 + * - ";
+        var expectedOutput = "15 4 + 12 8 - * 20 5 + / 18 10 - 7 3 + * -";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -147,7 +147,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "(-25-(13.66*2))+((18+14)/(16-10))";
-        var expectedOutput = "0 25 - 13.66 2 * - 18 14 + 16 10 - / + ";
+        var expectedOutput = "0 25 - 13.66 2 * - 18 14 + 16 10 - / +";
 
         var result = rpn.InfixNotationToRpn(input);
 
@@ -159,7 +159,7 @@ public class RpnServiceTests
     {
         var rpn = new RpnService();
         var input = "(((11*3)+7)/(15-10))-((16+17)*(20-12))";
-        var expectedOutput = "11 3 * 7 + 15 10 - / 16 17 + 20 12 - * - ";
+        var expectedOutput = "11 3 * 7 + 15 10 - / 16 17 + 20 12 - * -";
 
         var result = rpn.InfixNotationToRpn(input);
 
