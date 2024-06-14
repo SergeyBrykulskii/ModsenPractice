@@ -36,7 +36,7 @@
             Grid.ColumnSpan="4"/>
         <Label 
             x:Name="ResultLabel" 
-            Text="0"
+            Text="{Binding CalculationResult}"
             TextColor="White" 
             MaxLines="1"
             FontSize="35"

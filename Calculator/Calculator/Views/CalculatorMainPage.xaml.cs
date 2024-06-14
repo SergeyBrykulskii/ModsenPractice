@@ -8,6 +8,5 @@ public partial class CalculatorMainPage : ContentPage
     {
         InitializeComponent();
         BindingContext = viewModel;
-        //BindingContext = new MathExpressionViewModel();
     }
 }

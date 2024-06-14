@@ -1,4 +1,5 @@
-﻿using Calculator.ViewModels;
+﻿using Calculator.Services;
+using Calculator.ViewModels;
 using Calculator.Views;
 using Microsoft.Extensions.Logging;
 
@@ -22,6 +23,8 @@ namespace Calculator
 #endif
             builder.Services.AddSingleton<MathExpressionViewModel>();
             builder.Services.AddSingleton<CalculatorMainPage>();
+            builder.Services.AddSingleton<RpnService>();
+            builder.Services.AddSingleton<InputPreprocessingService>();
             return builder.Build();
         }
     }
