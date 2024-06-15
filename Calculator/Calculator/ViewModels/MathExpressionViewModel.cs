@@ -22,7 +22,6 @@ public partial class MathExpressionViewModel : ObservableObject
     private Dictionary<string, string> userVariables = [];
 
     private readonly RpnService _rpnService;
-    private readonly InputPreprocessingService _inputPreprocessingService;
 
     public ICommand AddCharCommand { get; private set; }
     public ICommand DeleteCharCommand { get; private set; }
@@ -31,10 +30,9 @@ public partial class MathExpressionViewModel : ObservableObject
     public ICommand AddVariableCommand { get; private set; }
     public ICommand CalculateExpressionCommand { get; private set; }
 
-    public MathExpressionViewModel(RpnService rpnService, InputPreprocessingService inputPreprocessingService)
+    public MathExpressionViewModel(RpnService rpnService)
     {
         _rpnService = rpnService;
-        _inputPreprocessingService = inputPreprocessingService;
 
         AddCharCommand = new Command<string>((key) => MathExpression += key);
 
@@ -53,7 +51,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var function = _inputPreprocessingService.ProcessFunction(MathExpression.Replace(" ", ""), userFuntions);
+                var function = InputPreprocessingService.ProcessFunction(MathExpression.Replace(" ", ""), userFuntions);
 
                 userFuntions[function.Name!] = function;
                 UserFunctionsList.Add(MathExpression);
@@ -70,7 +68,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var veriable = _inputPreprocessingService.ProcessVariable(MathExpression.Replace(" ", ""));
+                var veriable = InputPreprocessingService.ProcessVariable(MathExpression.Replace(" ", ""));
 
                 userVariables[veriable.Name] = veriable.Value;
                 UserVariablesList.Add(MathExpression);
@@ -86,7 +84,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var proccesedInput = _inputPreprocessingService.ReplaceUserFunctions(MathExpression.Replace(" ", ""), userFuntions);
+                var proccesedInput = InputPreprocessingService.ReplaceUserFunctions(MathExpression.Replace(" ", ""), userFuntions);
                 CalculationResult = _rpnService.СalculateRpn(_rpnService.InfixNotationToRpn(proccesedInput))
                     .ToString(CultureInfo.InvariantCulture);
 

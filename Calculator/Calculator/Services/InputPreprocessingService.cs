@@ -4,14 +4,14 @@ using System.Text.RegularExpressions;
 
 namespace Calculator.Services;
 
-public class InputPreprocessingService
+public static class InputPreprocessingService
 {
     /// <summary>
     /// Replaces function calls with their bodies with passed arguments
     /// </summary>
     /// <param name="input">Infix notation string with function calls</param>
     /// <returns>Infix notation string without function calls</returns>
-    public string ReplaceUserFunctions(string input, Dictionary<string, UserFunction> functions)
+    public static string ReplaceUserFunctions(string input, Dictionary<string, UserFunction> functions)
     {
         foreach (var function in functions)
         {
@@ -23,7 +23,7 @@ public class InputPreprocessingService
         return input;
     }
 
-    private string ReplaceFunctionCall(Match match, UserFunction userFunction)
+    private static string ReplaceFunctionCall(Match match, UserFunction userFunction)
     {
         var args = new List<string>();
         var currentArg = new StringBuilder();
@@ -79,7 +79,7 @@ public class InputPreprocessingService
     /// </summary>
     /// <param name="inputFunc"></param>
     /// <returns></returns>
-    public UserFunction ProcessFunction(string inputFunc, Dictionary<string, UserFunction> functions)
+    public static UserFunction ProcessFunction(string inputFunc, Dictionary<string, UserFunction> functions)
     {
         var outputFunc = new UserFunction();
         string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
@@ -104,7 +104,7 @@ public class InputPreprocessingService
     /// <param name="input">Infix notation string with user veriables</param>
     /// <param name="userVariables">Dictionary of varibles</param>
     /// <returns></returns>
-    public string ReplaceUserVariables(string input, Dictionary<string, string> userVariables)
+    public static string ReplaceUserVariables(string input, Dictionary<string, string> userVariables)
     {
         throw new NotImplementedException();
     }
@@ -114,7 +114,7 @@ public class InputPreprocessingService
     /// </summary>
     /// <param name="inputVar"></param>
     /// <returns></returns>
-    public (string Name, string Value) ProcessVariable(string inputVar)
+    public static (string Name, string Value) ProcessVariable(string inputVar)
     {
         string pattern = @"^(?<name>\w+)=(?<value>.+)$";
         Match match = Regex.Match(inputVar, pattern);

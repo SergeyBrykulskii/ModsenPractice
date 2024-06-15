@@ -25,7 +25,6 @@ namespace Calculator
             builder.Services.AddSingleton<MathExpressionViewModel>();
             builder.Services.AddSingleton<CalculatorMainPage>();
             builder.Services.AddSingleton<RpnService>();
-            builder.Services.AddSingleton<InputPreprocessingService>();
             return builder.Build();
         }
     }
