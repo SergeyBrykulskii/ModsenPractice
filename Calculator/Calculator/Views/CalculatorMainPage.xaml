@@ -95,7 +95,13 @@
             Grid.Column="5"
             Grid.Row="1"
             Grid.RowSpan="7"
-            ItemsSource="{Binding UserVariablesList}"/>
+            ItemsSource="{Binding UserVariablesList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}" TextColor="White" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <Button
             x:Name="C"
             BackgroundColor="#2d2e31"
