@@ -10,9 +10,7 @@ namespace Calculator.Services.Extensions
     {
         public static bool IsOperator(this char c)
         {
-            if ("()+-*/".Contains(c))
-                return true;
-            return false;
+            return "()+-*/".Contains(c);
         }
     }
 }
