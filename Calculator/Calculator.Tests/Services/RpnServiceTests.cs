@@ -94,6 +94,7 @@ public class RpnServiceTests
         var result = service.СalculateRpn(input);
 
         Assert.Equal(-256, result, 0.000001);
+    }
 
     [Fact]
 

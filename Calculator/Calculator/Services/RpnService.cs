@@ -7,13 +7,6 @@ namespace Calculator.Services;
 ///  Reverse Polish notation processing service
 /// </summary>
 
-public static class CharExtensions
-{
-    public static bool IsOperator(this char symbol)
-    {
-        return "()+-*/".Contains(symbol);
-    }
-}
 public class RpnService
 {
     public string InfixNotationToRpn(string input)
