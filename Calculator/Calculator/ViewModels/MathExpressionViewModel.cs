@@ -21,8 +21,6 @@ public partial class MathExpressionViewModel : ObservableObject
     private Dictionary<string, UserFunction> userFuntions = [];
     private Dictionary<string, string> userVariables = [];
 
-    private readonly RpnService _rpnService;
-
     public ICommand AddCharCommand { get; private set; }
     public ICommand DeleteCharCommand { get; private set; }
     public ICommand ClearEntryCommand { get; private set; }
@@ -30,10 +28,8 @@ public partial class MathExpressionViewModel : ObservableObject
     public ICommand AddVariableCommand { get; private set; }
     public ICommand CalculateExpressionCommand { get; private set; }
 
-    public MathExpressionViewModel(RpnService rpnService)
+    public MathExpressionViewModel()
     {
-        _rpnService = rpnService;
-
         AddCharCommand = new Command<string>((key) => MathExpression += key);
 
         DeleteCharCommand = new Command(() =>
@@ -85,7 +81,7 @@ public partial class MathExpressionViewModel : ObservableObject
             try
             {
                 var proccesedInput = InputPreprocessingService.ReplaceUserFunctions(MathExpression.Replace(" ", ""), userFuntions);
-                CalculationResult = _rpnService.СalculateRpn(_rpnService.InfixNotationToRpn(proccesedInput))
+                CalculationResult = RpnService.СalculateRpn(RpnService.InfixNotationToRpn(proccesedInput))
                     .ToString(CultureInfo.InvariantCulture);
 
                 MathExpression = string.Empty;
