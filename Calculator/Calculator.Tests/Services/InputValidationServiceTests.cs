@@ -1,4 +1,5 @@
 ﻿using Calculator.Services;
+using Calculator.Models;
 
 namespace Calculator.Tests.Services;
 
@@ -9,7 +10,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_Correct()
 	{
 		string input = "funcName(var1,var2)=var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.True(result);
 	}
@@ -18,7 +20,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_InvalidVariableName()
 	{
 		string input = "funcName(1var1,var2)=var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -27,7 +30,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_InvalidFunctionName()
 	{
 		string input = "1funcName(var1,var2)=var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -36,7 +40,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_InvalidVariableNameInBody()
 	{
 		string input = "funcName(var1,var2)=var1+3var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -45,7 +50,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_MissingEqualSign()
 	{
 		string input = "funcName(var1,var2)var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -54,7 +60,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_MissingComa()
 	{
 		string input = "funcName(var1,var2=var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -63,7 +70,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_UndefinedVariableInBody()
 	{
 		string input = "funcName(var1)=var1+var2";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}
@@ -72,7 +80,8 @@ public class InputValidationServiceTests
 	public void FunctionValidation_UnusedVariableInDefinition()
 	{
 		string input = "funcName(var1,var2)=var1+5";
-		var result = InputValidationService.FunctionValidation(input);
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var result = InputValidationService.FunctionValidation(input, functions);
 
 		Assert.False(result);
 	}

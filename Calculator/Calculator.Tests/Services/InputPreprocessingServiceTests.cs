@@ -68,8 +68,9 @@ public class InputPreprocessingServiceTests
 	public void ProcessFunction_Correct()
 	{
 		var processor = new InputPreprocessingService();
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
 		string input = "funcName(var1,var2)=var1+var2";
-		var result = processor.ProcessFunction(input);
+		var result = processor.ProcessFunction(input,functions);
 
 		Assert.Equal("funcName", result.Name);
 		Assert.Equal(new List<string> { "var1", "var2" }, result.Variables);
@@ -77,12 +78,31 @@ public class InputPreprocessingServiceTests
 	}
 
 	[Fact]
+	public void ProcessFunction_NestedFunction_Correct()
+	{
+		var processor = new InputPreprocessingService();
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
+		var func = new UserFunction();
+		func.Name = "f";
+		func.Variables = new List<string> { "x", "y"};
+		func.Expression = "x+y";
+		functions[func.Name] = func;
+		string input = "funcName(var1,var2)=var1+var2+f(1,2)";
+		var result = processor.ProcessFunction(input, functions);
+
+		Assert.Equal("funcName", result.Name);
+		Assert.Equal(new List<string> { "var1", "var2" }, result.Variables);
+		Assert.Equal("var1+var2+(1+2)", result.Expression);
+	}
+
+	[Fact]
 	public void ProcessFunction_InvalidInput()
 	{
 		var processor = new InputPreprocessingService();
+		Dictionary<string, UserFunction> functions = new Dictionary<string, UserFunction>();
 		string input = "funcName(var1,var2)var1+var2";
 
-		Assert.Throws<ArgumentException>(() => processor.ProcessFunction(input));
+		Assert.Throws<ArgumentException>(() => processor.ProcessFunction(input, functions));
 	}
 
 	[Fact]

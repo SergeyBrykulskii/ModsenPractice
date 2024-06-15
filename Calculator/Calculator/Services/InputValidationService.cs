@@ -10,7 +10,7 @@ public class InputValidationService
 	/// </summary>
 	/// <param name="inputFunc"></param>
 	/// <returns>True for valid function</returns>
-	public static bool FunctionValidation(string inputFunc)
+	public static bool FunctionValidation(string inputFunc, Dictionary<string, UserFunction> functions)
 	{
 		string pattern = @"^(?<name>[A-Za-z]\w*)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
 		Match match = Regex.Match(inputFunc, pattern);
@@ -35,7 +35,8 @@ public class InputValidationService
 
 
 		List<string> funcBodyVariables = new List<string>();
-		var expr = match.Groups["expression"].Value;
+		InputPreprocessingService inputPreprocessingService = new InputPreprocessingService();
+		var expr = inputPreprocessingService.ReplaceUserFunctions(match.Groups["expression"].Value, functions);
 		MatchCollection matches = Regex.Matches(expr, @"\b\w+\b");
 
 		foreach (Match m in matches)

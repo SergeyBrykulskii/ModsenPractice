@@ -53,7 +53,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var function = _inputPreprocessingService.ProcessFunction(MathExpression);
+                var function = _inputPreprocessingService.ProcessFunction(MathExpression, userFuntions);
 
                 userFuntions[function.Name!] = function;
                 UserFunctionsList.Add(MathExpression);

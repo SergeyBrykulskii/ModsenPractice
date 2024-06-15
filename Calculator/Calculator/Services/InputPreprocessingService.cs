@@ -47,13 +47,13 @@ public class InputPreprocessingService
     /// </summary>
     /// <param name="inputFunc"></param>
     /// <returns></returns>
-    public UserFunction ProcessFunction(string inputFunc)
+    public UserFunction ProcessFunction(string inputFunc, Dictionary<string, UserFunction> functions)
     {
         var outputFunc = new UserFunction();
         string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
         Match match = Regex.Match(inputFunc, pattern);
 
-        if (!InputValidationService.FunctionValidation(inputFunc))
+        if (!InputValidationService.FunctionValidation(inputFunc, functions))
         {
             throw new ArgumentException("Invalid input string format");
         }
@@ -61,7 +61,7 @@ public class InputPreprocessingService
         {
             outputFunc.Name = match.Groups["name"].Value;
             outputFunc.Variables = new List<string>(match.Groups["variables"].Value.Split(','));
-            outputFunc.Expression = match.Groups["expression"].Value;
+            outputFunc.Expression = ReplaceUserFunctions(match.Groups["expression"].Value, functions);
             return outputFunc;
         }
     }

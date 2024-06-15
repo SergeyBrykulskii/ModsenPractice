@@ -83,7 +83,13 @@
             Grid.Column="4"
             Grid.Row="1"
             Grid.RowSpan="7"
-            ItemsSource="{Binding UserFunctionsList}"/>
+            ItemsSource="{Binding UserFunctionsList}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Text="{Binding .}" TextColor="White" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
         <ListView 
             x:Name="VariableListView"
             Grid.Column="5"
