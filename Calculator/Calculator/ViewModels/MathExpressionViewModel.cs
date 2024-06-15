@@ -53,7 +53,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var function = _inputPreprocessingService.ProcessFunction(MathExpression, userFuntions);
+                var function = _inputPreprocessingService.ProcessFunction(MathExpression.Replace(" ", ""), userFuntions);
 
                 userFuntions[function.Name!] = function;
                 UserFunctionsList.Add(MathExpression);
@@ -70,7 +70,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var veriable = _inputPreprocessingService.ProcessVariable(MathExpression);
+                var veriable = _inputPreprocessingService.ProcessVariable(MathExpression.Replace(" ", ""));
 
                 userVariables[veriable.Name] = veriable.Value;
                 UserVariablesList.Add(MathExpression);
@@ -86,7 +86,7 @@ public partial class MathExpressionViewModel : ObservableObject
         {
             try
             {
-                var proccesedInput = _inputPreprocessingService.ReplaceUserFunctions(MathExpression, userFuntions);
+                var proccesedInput = _inputPreprocessingService.ReplaceUserFunctions(MathExpression.Replace(" ", ""), userFuntions);
                 CalculationResult = _rpnService.СalculateRpn(_rpnService.InfixNotationToRpn(proccesedInput))
                     .ToString(CultureInfo.InvariantCulture);
 
