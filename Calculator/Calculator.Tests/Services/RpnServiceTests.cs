@@ -1,12 +1,11 @@
 ﻿using Calculator.Services;
+using Calculator.Services.Extensions;
 
 namespace Calculator.Tests.Services;
 
 public class RpnServiceTests
 {
-
     [Fact]
-
     public void CalculateRpn_WithPositiveIntengerNumbersAndMixedOperations_ReturnsCorrectResult1()
     {
         var service = new RpnService();
@@ -95,8 +94,8 @@ public class RpnServiceTests
 
         Assert.Equal(-256, result, 0.000001);
     }
-    [Fact]
 
+    [Fact]
     public void IsOperator_ShouldReturnTrue_ForValidOperators()
     {
         var symbol1 = '(';
