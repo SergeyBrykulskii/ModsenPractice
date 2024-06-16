@@ -89,13 +89,11 @@ public static class InputPreprocessingService
         {
             throw new ArgumentException("Invalid input string format");
         }
-        else
-        {
-            outputFunc.Name = match.Groups["name"].Value;
-            outputFunc.Variables = new List<string>(match.Groups["variables"].Value.Split(','));
-            outputFunc.Expression = ReplaceUserFunctions(match.Groups["expression"].Value, functions);
-            return outputFunc;
-        }
+
+        outputFunc.Name = match.Groups["name"].Value;
+        outputFunc.Variables = new List<string>(match.Groups["variables"].Value.Split(','));
+        outputFunc.Expression = ReplaceUserFunctions(match.Groups["expression"].Value, functions);
+        return outputFunc;
     }
 
     /// <summary>
@@ -136,9 +134,7 @@ public static class InputPreprocessingService
         {
             throw new ArgumentException("Invalid input string format");
         }
-        else
-        {
-            return (match.Groups["name"].Value, match.Groups["value"].Value);
-        }
+
+        return (match.Groups["name"].Value, match.Groups["value"].Value);
     }
 }
