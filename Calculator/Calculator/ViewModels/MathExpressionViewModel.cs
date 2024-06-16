@@ -81,10 +81,9 @@ public partial class MathExpressionViewModel : ObservableObject
             try
             {
                 var proccesedInput = InputPreprocessingService.ReplaceUserFunctions(MathExpression.Replace(" ", ""), userFuntions);
+                proccesedInput = InputPreprocessingService.ReplaceUserVariables(proccesedInput, userVariables);
                 CalculationResult = RpnService.СalculateRpn(RpnService.InfixNotationToRpn(proccesedInput))
                     .ToString(CultureInfo.InvariantCulture);
-
-                MathExpression = string.Empty;
             }
             catch (Exception _)
             {

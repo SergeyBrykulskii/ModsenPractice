@@ -106,7 +106,20 @@ public static class InputPreprocessingService
     /// <returns></returns>
     public static string ReplaceUserVariables(string input, Dictionary<string, string> userVariables)
     {
-        throw new NotImplementedException();
+        var pattern = "[a-zA-Z]+";
+        input = Regex.Replace(input, pattern, match =>
+        {
+            if (userVariables.TryGetValue(match.Groups[0].Value, out string? value))
+            {
+                return value;
+            }
+            else
+            {
+                return match.Groups[0].Value;
+            }
+        });
+
+        return input;
     }
 
     /// <summary>
