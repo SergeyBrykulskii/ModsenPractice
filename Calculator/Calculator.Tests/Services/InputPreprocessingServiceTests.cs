@@ -1,27 +1,20 @@
+using Calculator.Models;
 using Calculator.Services;
 
 namespace Calculator.Tests.Services;
 
-
-
-using System.Collections.Generic;
-using Calculator.Models;
-using Calculator.Services;
-
-
 public class InputPreprocessingServiceTests
 {
-    private InputPreprocessingService service = new InputPreprocessingService();
     [Fact]
     public void ReplaceUserFunctions_ValidInput_ReplacesUserFunctionCalls()
     {
         var functions = new Dictionary<string, UserFunction> {
-            { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } }
+            { "f", new UserFunction { Name = "f", Variables = ["x", "y"], Expression = "x + y" } }
         };
-        string input = "3 + f(1, 2)";
-        
-        string result = service.ReplaceUserFunctions(input, functions);
-        
+        var input = "3 + f(1, 2)";
+
+        var result = InputPreprocessingService.ReplaceUserFunctions(input, functions);
+
         Assert.Equal("3 + (1 + 2)", result);
     }
 
@@ -30,78 +23,128 @@ public class InputPreprocessingServiceTests
     {
         var functions = new Dictionary<string, UserFunction>
         {
-            { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } }
+            { "f", new UserFunction { Name = "f", Variables = ["x", "y"], Expression = "x + y" } }
         };
-        string input = "3 + f(1)";
-        
-        string result = service.ReplaceUserFunctions(input, functions);
-        
-        Assert.True(result.Contains("Function f expects 2 arguments, but got 1."));
+        var input = "3 + f(1)";
+
+        var result = InputPreprocessingService.ReplaceUserFunctions(input, functions);
+
+        Assert.Contains("Function f expects 2 arguments, but got 1.", result);
     }
 
     [Fact]
     public void ReplaceUserFunctions_NoFunctionCall_ReturnsOriginalInput()
     {
         var functions = new Dictionary<string, UserFunction>();
-        string input = "3 + 5";
-        
-        string result = service.ReplaceUserFunctions(input, functions);
-        
+        var input = "3 + 5";
+
+        var result = InputPreprocessingService.ReplaceUserFunctions(input, functions);
+
         Assert.Equal("3 + 5", result);
     }
-    
+
     [Fact]
     public void ReplaceUserFunctions_FunctionAsParam_ReplacesUserFunctionCalls()
     {
-	    var functions = new Dictionary<string, UserFunction> {
-		    { "f", new UserFunction { Name = "f", Variables = new List<string> { "x", "y" }, Expression = "x + y" } },
-		    { "f1", new UserFunction { Name = "f1", Variables = new List<string> { "a", "b" }, Expression = "a * b" } }
-	    };
-	    string input = "3 + f(f1(1, 2), 2)";
-	    
-	    string result = service.ReplaceUserFunctions(input, functions);
-	    
-	    Assert.Equal("3 + ((1 * 2) + 2)", result);
+        var functions = new Dictionary<string, UserFunction> {
+            { "f", new UserFunction { Name = "f", Variables = ["x", "y"], Expression = "x + y" } },
+            { "f1", new UserFunction { Name = "f1", Variables = ["x", "y"], Expression = "x * y" } }
+        };
+        var input = "3 + f(f1(1, 2), 2)";
+
+        var result = InputPreprocessingService.ReplaceUserFunctions(input, functions);
+
+        Assert.Equal("3 + ((1 * 2) + 2)", result);
     }
-	
-	[Fact]
-	public void ProcessFunction_Correct()
-	{
-		var processor = new InputPreprocessingService();
-		string input = "funcName(var1,var2)=var1+var2";
-		var result = processor.ProcessFunction(input);
 
-		Assert.Equal("funcName", result.Name);
-		Assert.Equal(new List<string> { "var1", "var2" }, result.Variables);
-		Assert.Equal("var1+var2", result.Expression);
-	}
+    [Fact]
+    public void ProcessFunction_ValidInput_ReturnsProcessedFunction()
+    {
+        var functions = new Dictionary<string, UserFunction>();
+        var input = "funcName(var1,var2)=var1+var2";
+        var result = InputPreprocessingService.ProcessFunction(input, functions);
 
-	[Fact]
-	public void ProcessFunction_InvalidInput()
-	{
-		var processor = new InputPreprocessingService();
-		string input = "funcName(var1,var2)var1+var2";
+        Assert.Equal("funcName", result.Name);
+        Assert.Equal(["var1", "var2"], result.Variables);
+        Assert.Equal("var1+var2", result.Expression);
+    }
 
-		Assert.Throws<ArgumentException>(() => processor.ProcessFunction(input));
-	}
+    [Fact]
+    public void ProcessFunction_NestedFunction_ReturnsProcessedFunction()
+    {
+        var functions = new Dictionary<string, UserFunction>();
+        var func = new UserFunction
+        {
+            Name = "f",
+            Variables = ["x", "y"],
+            Expression = "x+y"
+        };
+        functions[func.Name] = func;
+        var input = "funcName(var1,var2)=var1+var2+f(1,2)";
+        var result = InputPreprocessingService.ProcessFunction(input, functions);
 
-	[Fact]
-	public void ProcessVariable_Correct()
-	{
-		var processor = new InputPreprocessingService();
-		string input = "x=5";
-		var result = processor.ProcessVariable(input);
+        Assert.Equal("funcName", result.Name);
+        Assert.Equal(["var1", "var2"], result.Variables);
+        Assert.Equal("var1+var2+(1+2)", result.Expression);
+    }
 
-		Assert.Equal("x", result.Name);
-		Assert.Equal("5", result.Value);
-	}
+    [Fact]
+    public void ProcessFunction_InvalidInput_ThrowsException()
+    {
+        var functions = new Dictionary<string, UserFunction>();
+        var input = "funcName(var1,var2)var1+var2";
 
-	[Fact]
-	public void ProcessVariable_InvalidInput()
-	{
-		var processor = new InputPreprocessingService();
-		string input = "x";
+        Assert.Throws<ArgumentException>(() => InputPreprocessingService.ProcessFunction(input, functions));
+    }
 
-		Assert.Throws<ArgumentException>(() => processor.ProcessVariable(input));
-	}
+    [Fact]
+    public void ProcessVariable_ValidInput_ReturnsProcessedVariable()
+    {
+        var input = "x=5";
+        var result = InputPreprocessingService.ProcessVariable(input);
+
+        Assert.Equal("x", result.Name);
+        Assert.Equal("5", result.Value);
+    }
+
+    [Fact]
+    public void ProcessVariable_InvalidInput_ThrowsException()
+    {
+        var input = "x";
+
+        Assert.Throws<ArgumentException>(() => InputPreprocessingService.ProcessVariable(input));
+    }
+
+    [Fact]
+    public void ReplaceUserVariables_NoVariables__ReturnsOriginalInput()
+    {
+        var input = "3 + 5";
+        var variables = new Dictionary<string, string> { { "x", "2" } };
+
+        var result = InputPreprocessingService.ReplaceUserVariables(input, variables);
+
+        Assert.Equal(input, result);
+    }
+
+    [Fact]
+    public void ReplaceUserVariables_ValidInput_VeriablesReplaced()
+    {
+        var input = "3 + 5 + x";
+        var variables = new Dictionary<string, string> { { "x", "2" } };
+
+        var result = InputPreprocessingService.ReplaceUserVariables(input, variables);
+
+        Assert.Equal("3 + 5 + 2", result);
+    }
+
+    [Fact]
+    public void ReplaceUserVariables_InvalidVariable_ReturnsOriginalInput()
+    {
+        var input = "3 + 5 + y";
+        var variables = new Dictionary<string, string> { { "x", "2" } };
+
+        var result = InputPreprocessingService.ReplaceUserVariables(input, variables);
+
+        Assert.Equal(input, result);
+    }
 }
