@@ -10,7 +10,7 @@ public class MathExpressionViewModelTests
     public void AddCharCommand_EmptyExpression_AddsCharToMathExpression()
     {
         // Arrange
-        const string expected = "123";
+        var expected = "123";
 
         // Act
         _viewModel.AddCharCommand.Execute("1");
@@ -25,7 +25,7 @@ public class MathExpressionViewModelTests
     public void DeleteCharCommand_NotEmptyExpression_DeletesLastCharFromMathExpression()
     {
         // Arrange
-        const string expected = "12";
+        var expected = "12";
         _viewModel.MathExpression = "123";
 
         // Act
@@ -39,7 +39,7 @@ public class MathExpressionViewModelTests
     public void ClearEntryCommand_FilledFields_ClearsMathExpressionAndCalculationResult()
     {
         // Arrange
-        const string expectedFieldState = "";
+        var expectedFieldState = "";
         _viewModel.MathExpression = "123";
         _viewModel.CalculationResult = "456";
 
@@ -55,7 +55,7 @@ public class MathExpressionViewModelTests
     public void AddFunctionCommand_CorrectFunction_AddsFunctionToUserFunctionsList()
     {
         // Arrange
-        const string expected = "f(x,y) = x + y";
+        var expected = "f(x,y) = x + y";
 
         // Act
         _viewModel.MathExpression = expected;
@@ -69,7 +69,7 @@ public class MathExpressionViewModelTests
     public void AddVariableCommand_CorrectVariable_AddsVariableToUserVariablesList()
     {
         // Arrange
-        const string expected = "x = 2";
+        var expected = "x = 2";
 
         // Act
         _viewModel.MathExpression = expected;
@@ -83,8 +83,8 @@ public class MathExpressionViewModelTests
     public void CalculateExpressionCommand_CorrectExpression_CalculatesExpressionAndSetsCalculationResult()
     {
         // Arrange
-        const string mathExpression = "2 + 2";
-        const string expectedCalculationResult = "4";
+        var mathExpression = "2 + 2";
+        var expectedCalculationResult = "4";
 
         // Act
         _viewModel.MathExpression = mathExpression;
@@ -98,7 +98,7 @@ public class MathExpressionViewModelTests
     public void AddFunctionCommand_InvalidFunction_DoesNotAddFunctionToUserFunctionsList()
     {
         // Arrange
-        const string invalidFunction = "f(x,y) = x +";
+        var invalidFunction = "f(x,y) = x +";
 
         // Act
         _viewModel.MathExpression = invalidFunction;
@@ -113,7 +113,7 @@ public class MathExpressionViewModelTests
     public void AddVariableCommand_InvalidVariable_DoesNotAddVariableToUserVariablesList()
     {
         // Arrange
-        const string invalidVariable = "x =";
+        var invalidVariable = "x =";
 
         // Act
         _viewModel.MathExpression = invalidVariable;
@@ -128,8 +128,8 @@ public class MathExpressionViewModelTests
     public void CalculateExpressionCommand_InvalidExpression_DoesNotCalculateExpressionAndSetsCalculationResult()
     {
         // Arrange
-        const string invalidExpression = "2 + + 2";
-        const string expectedCalculationResult = "Invalid input";
+        var invalidExpression = "2 + + 2";
+        var expectedCalculationResult = "Invalid input";
 
         // Act
         _viewModel.MathExpression = invalidExpression;
