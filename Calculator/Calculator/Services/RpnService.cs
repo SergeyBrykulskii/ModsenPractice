@@ -21,8 +21,8 @@ public static class RpnService
             { '/', 2}
          };
 
-        Stack<char> operators = new();
-        StringBuilder output = new();
+        var operators = new Stack<char>();
+        var output = new StringBuilder();
 
         for (int i = 0; i < input.Length; i++)
         {
