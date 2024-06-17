@@ -58,7 +58,7 @@ public class InputPreprocessingServiceTests
     }
 
     [Fact]
-    public void ProcessFunction_Correct()
+    public void ProcessFunction_ValidInput_ReturnsProcessedFunction()
     {
         var functions = new Dictionary<string, UserFunction>();
         var input = "funcName(var1,var2)=var1+var2";
@@ -70,7 +70,7 @@ public class InputPreprocessingServiceTests
     }
 
     [Fact]
-    public void ProcessFunction_NestedFunction_Correct()
+    public void ProcessFunction_NestedFunction_ReturnsProcessedFunction()
     {
         var functions = new Dictionary<string, UserFunction>();
         var func = new UserFunction
@@ -89,7 +89,7 @@ public class InputPreprocessingServiceTests
     }
 
     [Fact]
-    public void ProcessFunction_InvalidInput()
+    public void ProcessFunction_InvalidInput_ThrowsException()
     {
         var functions = new Dictionary<string, UserFunction>();
         var input = "funcName(var1,var2)var1+var2";
@@ -98,7 +98,7 @@ public class InputPreprocessingServiceTests
     }
 
     [Fact]
-    public void ProcessVariable_Correct()
+    public void ProcessVariable_ValidInput_ReturnsProcessedVariable()
     {
         var input = "x=5";
         var result = InputPreprocessingService.ProcessVariable(input);
@@ -108,7 +108,7 @@ public class InputPreprocessingServiceTests
     }
 
     [Fact]
-    public void ProcessVariable_InvalidInput()
+    public void ProcessVariable_InvalidInput_ThrowsException()
     {
         var input = "x";
 

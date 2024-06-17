@@ -7,9 +7,9 @@ public class InputValidationServiceTests
 {
 
     [Fact]
-    public void FunctionValidation_Correct()
+    public void FunctionValidation_ValidInput_ReturnsTrue()
     {
-        string input = "funcName(var1,var2)=var1+var2";
+        var input = "funcName(var1,var2)=var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -17,9 +17,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_InvalidVariableName()
+    public void FunctionValidation_InvalidVariableName_ReturnsFalse()
     {
-        string input = "funcName(1var1,var2)=var1+var2";
+        var input = "funcName(1var1,var2)=var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -27,9 +27,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_InvalidFunctionName()
+    public void FunctionValidation_InvalidFunctionName_ReturnsFalse()
     {
-        string input = "1funcName(var1,var2)=var1+var2";
+        var input = "1funcName(var1,var2)=var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -37,9 +37,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_InvalidVariableNameInBody()
+    public void FunctionValidation_InvalidVariableNameInBody_ReturnsFalse()
     {
-        string input = "funcName(var1,var2)=var1+3var2";
+        var input = "funcName(var1,var2)=var1+3var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -47,9 +47,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_MissingEqualSign()
+    public void FunctionValidation_MissingEqualSign_ReturnsFalse()
     {
-        string input = "funcName(var1,var2)var1+var2";
+        var input = "funcName(var1,var2)var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -57,9 +57,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_MissingComa()
+    public void FunctionValidation_MissingComa_ReturnsFalse()
     {
-        string input = "funcName(var1,var2=var1+var2";
+        var input = "funcName(var1,var2=var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -67,9 +67,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_UndefinedVariableInBody()
+    public void FunctionValidation_UndefinedVariableInBody_ReturnsFalse()
     {
-        string input = "funcName(var1)=var1+var2";
+        var input = "funcName(var1)=var1+var2";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -77,9 +77,9 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void FunctionValidation_UnusedVariableInDefinition()
+    public void FunctionValidation_UnusedVariableInDefinition_ReturnsFalse()
     {
-        string input = "funcName(var1,var2)=var1+5";
+        var input = "funcName(var1,var2)=var1+5";
         var functions = new Dictionary<string, UserFunction>();
         var result = InputValidationService.FunctionValidation(input, functions);
 
@@ -87,45 +87,45 @@ public class InputValidationServiceTests
     }
 
     [Fact]
-    public void VariableValidation_Correct_PositiveNumber()
+    public void VariableValidation_PositiveNumber_ReturnsTrue()
     {
-        string input = "x=5";
+        var input = "x=5";
         var result = InputValidationService.VariableValidation(input);
 
         Assert.True(result);
     }
 
     [Fact]
-    public void VariableValidation_Correct_NegativeNumber()
+    public void VariableValidation_NegativeNumber_ReturnsTrue()
     {
-        string input = "x=-5";
+        var input = "x=-5";
         var result = InputValidationService.VariableValidation(input);
 
         Assert.True(result);
     }
 
     [Fact]
-    public void VariableValidation_Correct_FractionalNumber()
+    public void VariableValidation_FractionalNumber_ReturnsTrue()
     {
-        string input = "x=5.6";
+        var input = "x=5.6";
         var result = InputValidationService.VariableValidation(input);
 
         Assert.True(result);
     }
 
     [Fact]
-    public void VariableValidation_InvalidVariableName()
+    public void VariableValidation_InvalidVariableName_ReturnsFalse()
     {
-        string input = "1x=4";
+        var input = "1x=4";
         var result = InputValidationService.VariableValidation(input);
 
         Assert.False(result);
     }
 
     [Fact]
-    public void VariableValidation_MissingEqualSign()
+    public void VariableValidation_MissingEqualSign_ReturnsFalse()
     {
-        string input = "x4";
+        var input = "x4";
         var result = InputValidationService.VariableValidation(input);
 
         Assert.False(result);

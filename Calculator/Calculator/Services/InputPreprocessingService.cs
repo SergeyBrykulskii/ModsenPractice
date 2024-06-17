@@ -82,8 +82,8 @@ public static class InputPreprocessingService
     public static UserFunction ProcessFunction(string inputFunc, Dictionary<string, UserFunction> functions)
     {
         var outputFunc = new UserFunction();
-        string pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
-        Match match = Regex.Match(inputFunc, pattern);
+        var pattern = @"^(?<name>\w+)\((?<variables>[\w,]+)\)=(?<expression>.+)$";
+        var match = Regex.Match(inputFunc, pattern);
 
         if (!InputValidationService.FunctionValidation(inputFunc, functions))
         {
@@ -127,8 +127,8 @@ public static class InputPreprocessingService
     /// <returns></returns>
     public static (string Name, string Value) ProcessVariable(string inputVar)
     {
-        string pattern = @"^(?<name>\w+)=(?<value>.+)$";
-        Match match = Regex.Match(inputVar, pattern);
+        var pattern = @"^(?<name>\w+)=(?<value>.+)$";
+        var match = Regex.Match(inputVar, pattern);
 
         if (!InputValidationService.VariableValidation(inputVar))
         {
